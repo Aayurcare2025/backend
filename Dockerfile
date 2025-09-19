@@ -23,7 +23,7 @@
 # ===========================
 # Stage 1: Build (with dev dependencies)
 # ===========================
-FROM node:18 AS builder
+FROM node:22 AS builder
 WORKDIR /build
 
 # Copy package.json and package-lock.json first
@@ -41,7 +41,7 @@ RUN npm run build
 # ===========================
 # Stage 2: Run (production only)
 # ===========================
-FROM node:18-slim AS runner
+FROM node:22-slim AS runner
 WORKDIR /app
 
 # Copy only package.json & package-lock.json to install prod deps
