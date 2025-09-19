@@ -1,11 +1,12 @@
 # Stage 1 - Build
 # Stage 1
 FROM node:20 as builder
-WORKDIR /build
+WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .  
 RUN npm run build
+
 
 # Stage 2 - Run
 FROM node:20 AS runner
