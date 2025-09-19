@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: backend-backend
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env          # ✅ Add this line
+    depends_on:
+      - mysql2
+
+
+  mysql2:
+    image: mysql:8.0
+    container_name: app-mysql2
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Namb@0253
+      MYSQL_DATABASE: aayurcare
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
