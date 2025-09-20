@@ -77,23 +77,27 @@ export class UserController {
 
 
   @Post('upload-excel') @UseInterceptors(FileInterceptor('file'))
-  async uploadExcel(@UploadedFile() file: Express.Multer.File) { if (!file) { throw new BadRequestException('No file uploaded'); } 
-  const workbook = XLSX.read(file.buffer, { type: 'buffer' }); 
-  const sheetName = workbook.SheetNames[0]; console.log("sheetName", sheetName);
-   const sheet = workbook.Sheets[sheetName]; const jsonData = XLSX.utils.sheet_to_json(sheet);
-    console.log("json data", jsonData); 
-    return await this.userService.saveExcelData(jsonData); }
+  async uploadExcel(@UploadedFile() file: Express.Multer.File) {
+    if (!file) { throw new BadRequestException('No file uploaded'); }
+    const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0]; console.log("sheetName", sheetName);
+    const sheet = workbook.Sheets[sheetName]; const jsonData = XLSX.utils.sheet_to_json(sheet);
+    console.log("json data", jsonData);
+    return await this.userService.saveExcelData(jsonData);
+  }
 
 
 
 
-     @Post('upload-excel/Ipd/Opd') @UseInterceptors(FileInterceptor('file'))
-  async uploadExcelDataOfIpdAndOpd(@UploadedFile() file: Express.Multer.File) { if (!file) { throw new BadRequestException('No file uploaded'); } 
-  const workbook = XLSX.read(file.buffer, { type: 'buffer' }); 
-  const sheetName = workbook.SheetNames[0]; console.log("sheetName", sheetName);
-   const sheet = workbook.Sheets[sheetName]; const jsonData = XLSX.utils.sheet_to_json(sheet);
-    console.log("json data", jsonData); 
-    return await this.userService.saveExcelData2(jsonData); }
+  @Post('upload-excel/Ipd/Opd') @UseInterceptors(FileInterceptor('file'))
+  async uploadExcelDataOfIpdAndOpd(@UploadedFile() file: Express.Multer.File) {
+    if (!file) { throw new BadRequestException('No file uploaded'); }
+    const workbook = XLSX.read(file.buffer, { type: 'buffer' });
+    const sheetName = workbook.SheetNames[0]; console.log("sheetName", sheetName);
+    const sheet = workbook.Sheets[sheetName]; const jsonData = XLSX.utils.sheet_to_json(sheet);
+    console.log("json data", jsonData);
+    return await this.userService.saveExcelData2(jsonData);
+  }
 
 
 
@@ -119,7 +123,7 @@ export class UserController {
   }
 
 
-    @Get('/insurance/:ipd/:accident/:age')
+  @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
     @Param('ipd') ipd?: string,
     @Param('accident') accident?: string,
