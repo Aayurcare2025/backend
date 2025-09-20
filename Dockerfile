@@ -60,5 +60,4 @@ COPY --from=builder /build/.env ./
 EXPOSE 5000
 
 # Start the app
-# Start in dev mode
-CMD ["npm", "run", "start:dev"]
+CMD ["node", "dist/main.js"]
