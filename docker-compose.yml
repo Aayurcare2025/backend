@@ -5,7 +5,7 @@ services:
     container_name: backend_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: Namb@0253
       MYSQL_DATABASE: backend_db
       MYSQL_USER: backend_user
       MYSQL_PASSWORD: backend_password
