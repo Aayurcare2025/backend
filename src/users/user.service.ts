@@ -109,9 +109,9 @@ async userregister(userRegister: UserDto): Promise<Partial<User>> {
 
 async saveExcelData(data: any[]): Promise<any> {
   // const savedUsers = [];
- const savedUsers: Data1[] = [];
+ const savedUsers: Data2[] = [];
   for (const row of data) {
-    const { IPD,Accident,OPD,Total_sum_insured,Age_less_than_equal_to_20_yrs,Age_is_21_to_35_yrs,Age_is_36_to_45_yrs,
+    const { IPD,Accident,Total_sum_insured,Age_less_than_equal_to_20_yrs,Age_is_21_to_35_yrs,Age_is_36_to_45_yrs,
       Age_is_46_to_55_yrs,Age_is_56_to_60_yrs,Age_is_61_to_70_yrs,Age_is_71_to_80_yrs,Age_is_above_80_yrs
     } = row;
 
@@ -122,13 +122,13 @@ async saveExcelData(data: any[]): Promise<any> {
     //   ||Age_is_61_70_yrs ||Age_is_71_80_yrs  ||Age_is_above_80_yrs
     // )continue;
 
-    const data1 = new Data1();
+    const data1 = new Data2();
     // data1.name = name;
     // data1.age = Number(age);
     // data1.gender = gender;
     data1.IPD=IPD;
     data1.Accident=Accident;
-    data1.OPD=OPD;
+    // data1.OPD=OPD;
     data1.Total_sum_insured=Total_sum_insured;
     data1.Age_less_than_equal_to_20_yrs=Age_less_than_equal_to_20_yrs;
     data1.Age_is_21_to_35_yrs=Age_is_21_to_35_yrs;
@@ -138,7 +138,7 @@ async saveExcelData(data: any[]): Promise<any> {
     data1.Age_is_61_to_70_yrs=Age_is_61_to_70_yrs;
     data1.Age_is_71_to_80_yrs=Age_is_71_to_80_yrs;
     data1.Age_is_above_80_yrs=Age_is_above_80_yrs
-    await this.data1Repository.save(data1);
+    await this.data2Repository.save(data1);
     savedUsers.push(data1);
   }
   return { message: 'Excel data saved successfully', saved: savedUsers.length };
