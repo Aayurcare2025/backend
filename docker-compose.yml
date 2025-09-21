@@ -1,63 +1,20 @@
-# version: '3.8'
-# services:
-#   mysql:
-#     image: mysql:8.0
-#     container_name: backend_mysql
-#     restart: always
-#     environment:
-#       MYSQL_ROOT_PASSWORD: Namb@0253
-#       MYSQL_DATABASE: backend_db
-#       MYSQL_USER: backend_user
-#       MYSQL_PASSWORD: backend_password
-#     ports:
-#       - "3306:3306"
-#     volumes:
-#       - mysql_data:/var/lib/mysql
-#       - ./mysql-init:/docker-entrypoint-initdb.d
-#     networks:
-#       - backend_network
 
-#   app:
-#     build: .
-#     container_name: backend_app
-#     ports:
-#       - "5001:5000"
-#     restart: always
-#     environment:
-#       - NODE_ENV=production
-#     env_file:
-#       - .env
-#     depends_on:
-#       - mysql
-#     networks:
-#       - backend_network
-
-# volumes:
-#   mysql_data:
-#     driver: local
-
-# networks:
-#   backend_network:
-#     driver: bridge
-
-
+version: '3.8'
 services:
   mysql:
     image: mysql:8.0
     container_name: backend_mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Namb@0253
+      MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: backend_db
       MYSQL_USER: backend_user
-      MYSQL_PASSWORD: Namb@0253
+      MYSQL_PASSWORD: backend_password
     ports:
       - "3306:3306"
-    healthcheck:
-      test: ["CMD", "mysqladmin" ,"ping", "-u", "backend_user", "-pNamb@0253"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
     networks:
       - backend_network
 
@@ -67,10 +24,19 @@ services:
     ports:
       - "5001:5000"
     restart: always
+    environment:
+      - NODE_ENV=production
     env_file:
       - .env
     depends_on:
-      mysql:
-        condition: service_healthy
+      - mysql
     networks:
       - backend_network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  backend_network:
+    driver: bridge
