@@ -149,27 +149,27 @@ async saveExcelData(data: any[]): Promise<any> {
 async saveExcelData2(data: any[]): Promise<any> {
 
   // const savedUsers = [];
- const savedUsers: Data1[] = [];
+ const savedUsers: Data2[] = [];
   for (const row of data) {
     const { IPD,Accident,Total_sum_insured,Age_less_than_equal_to_20_yrs,Age_is_21_to_35_yrs,Age_is_36_to_45_yrs,
       Age_is_46_to_55_yrs,Age_is_56_to_60_yrs,Age_is_61_to_70_yrs,Age_is_71_to_80_yrs,Age_is_above_80_yrs
     } = row;
-    const data1 = new Data1();
+    const data2 = new Data2();
    
-    data1.IPD=IPD;
-    data1.Accident=Accident;
+    data2.IPD=IPD;
+    data2.Accident=Accident;
    
-    data1.Total_sum_insured=Total_sum_insured;
-    data1.Age_less_than_equal_to_20_yrs=Age_less_than_equal_to_20_yrs;
-    data1.Age_is_21_to_35_yrs=Age_is_21_to_35_yrs;
-    data1.Age_is_36_to_45_yrs=Age_is_36_to_45_yrs
-    data1.Age_is_46_to_55_yrs=Age_is_46_to_55_yrs;
-    data1.Age_is_56_to_60_yrs=Age_is_56_to_60_yrs;
-    data1.Age_is_61_to_70_yrs=Age_is_61_to_70_yrs;
-    data1.Age_is_71_to_80_yrs=Age_is_71_to_80_yrs;
-    data1.Age_is_above_80_yrs=Age_is_above_80_yrs
-    await this.data2Repository.save(data1);
-    savedUsers.push(data1);
+    data2.Total_sum_insured=Total_sum_insured;
+    data2.Age_less_than_equal_to_20_yrs=Age_less_than_equal_to_20_yrs;
+    data2.Age_is_21_to_35_yrs=Age_is_21_to_35_yrs;
+    data2.Age_is_36_to_45_yrs=Age_is_36_to_45_yrs
+    data2.Age_is_46_to_55_yrs=Age_is_46_to_55_yrs;
+    data2.Age_is_56_to_60_yrs=Age_is_56_to_60_yrs;
+    data2.Age_is_61_to_70_yrs=Age_is_61_to_70_yrs;
+    data2.Age_is_71_to_80_yrs=Age_is_71_to_80_yrs;
+    data2.Age_is_above_80_yrs=Age_is_above_80_yrs
+    await this.data2Repository.save(data2);
+    savedUsers.push(data2);
   }
   return { message: 'Excel data saved successfully', saved: savedUsers.length };
 }
