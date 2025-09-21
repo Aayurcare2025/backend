@@ -176,7 +176,7 @@ async saveExcelData2(data: any[]): Promise<any> {
   async getInsurance(ipd?: number, accident?: number, opd?: number, age?: number) {
     if (age === undefined) throw new BadRequestException('Age is required');
 
-    const query = this.data1Repository.createQueryBuilder('data');
+    const query = this.data2Repository.createQueryBuilder('data');
 
     if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
     if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
