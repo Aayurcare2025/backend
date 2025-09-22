@@ -138,7 +138,7 @@ async saveExcelData(data: any[]): Promise<any> {
     data1.Age_is_61_to_70_yrs=Age_is_61_to_70_yrs;
     data1.Age_is_71_to_80_yrs=Age_is_71_to_80_yrs;
     data1.Age_is_above_80_yrs=Age_is_above_80_yrs
-    await this.data2Repository.save(data1);
+    await this.data1Repository.save(data1);
     savedUsers.push(data1);
   }
   return { message: 'Excel data saved successfully', saved: savedUsers.length };
