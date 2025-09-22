@@ -109,7 +109,7 @@ async userregister(userRegister: UserDto): Promise<Partial<User>> {
 
 async saveExcelData(data: any[]): Promise<any> {
   // const savedUsers = [];
- const savedUsers: Data2[] = [];
+ const savedUsers: Data1[] = [];
   for (const row of data) {
     const { IPD,Accident,Total_sum_insured,Age_less_than_equal_to_20_yrs,Age_is_21_to_35_yrs,Age_is_36_to_45_yrs,
       Age_is_46_to_55_yrs,Age_is_56_to_60_yrs,Age_is_61_to_70_yrs,Age_is_71_to_80_yrs,Age_is_above_80_yrs
@@ -122,7 +122,7 @@ async saveExcelData(data: any[]): Promise<any> {
     //   ||Age_is_61_70_yrs ||Age_is_71_80_yrs  ||Age_is_above_80_yrs
     // )continue;
 
-    const data1 = new Data2();
+    const data1 = new Data1();
     // data1.name = name;
     // data1.age = Number(age);
     // data1.gender = gender;
@@ -180,7 +180,7 @@ async saveExcelData2(data: any[]): Promise<any> {
 
     if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
     if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
-   
+   if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
 
     const data = await query.getOne();
   
