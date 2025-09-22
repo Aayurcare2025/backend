@@ -66,7 +66,6 @@ import { Data2 } from './users/data2.entity';
         type: 'mysql',
         host: config.get<string>('DB_HOST'),
       port: parseInt(config.get<string>('DB_PORT') || '3306', 10),
-
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),

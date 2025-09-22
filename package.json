@@ -32,10 +32,10 @@
     "class-validator": "^0.14.2",
     "docker": "^1.0.0",
     "multer": "^2.0.2",
-    "mysql": "^2.18.1",
     "react-router-dom": "^7.9.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
+    "typeorm": "^0.3.27",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
