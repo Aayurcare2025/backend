@@ -17,7 +17,7 @@ export class Health extends BaseEntity {
   ensure:string;
 
   @Column()
-  pincode:number
+  pincode:number;
 
   @Column()
   gender:string;
@@ -49,16 +49,15 @@ export class Health extends BaseEntity {
   @Column()
   oocupation:string;
 
-  @Column()
-  file_upload:string;
+  // @Column()
+  // file_upload:string;
 
+
+  @Column({ type: "mediumblob", nullable: true })
+file_upload: Buffer;
 
   @Column()
   nominee_name:string;
-
-
-  @Column()
-  nomineename:string;
 
 
   @Column()

@@ -47,7 +47,8 @@ async createData(payload: any): Promise<Health> {
       dd_mm_yy: payload.formData?.proposer?.dob,
       mobile_number: payload.formData?.proposer?.mobile,
       oocupation: payload.formData?.proposer?.occupation,
-      file_upload: payload.files, // handle separately (multer)
+      // file_upload: payload.files, // handle separately (multer)
+file_upload: payload.fileBuffer, // save buffer in DB
 
       nominee_name: payload.formData?.nominee?.name,
       dd_mm_yyyy: payload.formData?.nominee?.dob,

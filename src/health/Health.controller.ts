@@ -1,28 +1,32 @@
 
 
 
-import {
-  BadRequestException, Body, Controller, Post, UnauthorizedException, ValidationPipe, UploadedFile,
-  UseInterceptors,
-  Get,
-  Query,
-  Param,
-} from "@nestjs/common";
-import { HealthService } from "./Health.service";
-import { Health } from "./Health.entity";
+// import {
+//   BadRequestException, Body, Controller, Post, UnauthorizedException, ValidationPipe, UploadedFile,
+//   UseInterceptors,
+//   Get,
+//   Query,
+//   Param,
+// } from "@nestjs/common";
+// import { HealthService } from "./Health.service";
+// import { Health } from "./Health.entity";
+// import { diskStorage, memoryStorage } from 'multer';
+// //data
 
-//data
+// export const multerConfig = {
+//   storage: memoryStorage(), // keep files in memory as Buffer
+// };
 
-@Controller('health')
-export class HealthController {
-  constructor(private healthservice: HealthService,
+// @Controller('health')
+// export class HealthController {
+//   constructor(private healthservice: HealthService,
    
-  ) { }
+//   ) { }
 
-   @Post('apply')
-  async apply(@Body() payload: any): Promise<Health> {
-    return this.healthservice.createData(payload);
-  }
+//    @Post('apply')
+//   async apply(@Body() payload: any): Promise<Health> {
+//     return this.healthservice.createData(payload);
+//   }
 
  
 
@@ -33,5 +37,64 @@ export class HealthController {
 
 
 
+// }
+
+
+
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+  Get,
+  Param,
+  Res,
+} from "@nestjs/common";
+import { HealthService } from "./Health.service";
+import { Health } from "./Health.entity";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { memoryStorage } from "multer";
+import { Response } from "express";
+
+// Multer config to keep files in memory as Buffer
+export const multerConfig = {
+  storage: memoryStorage(),
+};
+
+@Controller("health")
+export class HealthController {
+  constructor(private healthservice: HealthService) {}
+
+  // 👉 with file upload (apply)
+  @Post("apply")
+  @UseInterceptors(FileInterceptor("file", multerConfig)) // expecting "file" field in form-data
+  async apply(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() payload: any
+  ): Promise<Health> {
+    if (!file) {
+      throw new BadRequestException("File is required");
+    }
+
+    // pass file.buffer to service
+    return this.healthservice.createData({
+      ...payload,
+      fileBuffer: file.buffer,
+    });
+  }
+
+  // 👉 get file back from DB
+//   @Get(":id/file")
+//   async getFile(@Param("id") id: number, @Res() res: Response) {
+//     const health = await this.healthservice.findOne(id);
+//     if (!health?.file_upload) {
+//       throw new BadRequestException("File not found");
+//     }
+
+//     res.setHeader("Content-Type", "application/pdf"); // or detect mime-type dynamically
+//     res.send(health.file_upload);
+//   }
 }
 
