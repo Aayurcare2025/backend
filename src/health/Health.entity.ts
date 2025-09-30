@@ -5,7 +5,7 @@ import { UserRole } from "src/enum/role.enum";
 
 
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-@Entity({ name: 'user' })
+@Entity({ name: 'health' })
 export class Health extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
