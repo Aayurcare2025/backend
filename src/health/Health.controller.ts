@@ -68,22 +68,22 @@ export class HealthController {
   constructor(private healthservice: HealthService) {}
 
   // 👉 with file upload (apply)
-  @Post("apply")
-  @UseInterceptors(FileInterceptor("file", multerConfig)) // expecting "file" field in form-data
-  async apply(
-    @UploadedFile() file: Express.Multer.File,
-    @Body() payload: any
-  ): Promise<Health> {
-    if (!file) {
-      throw new BadRequestException("File is required");
-    }
+  // @Post("apply")
+  // @UseInterceptors(FileInterceptor("file", multerConfig)) // expecting "file" field in form-data
+  // async apply(
+  //   @UploadedFile() file: Express.Multer.File,
+  //   @Body() payload: any
+  // ): Promise<Health> {
+  //   if (!file) {
+  //     throw new BadRequestException("File is required");
+  //   }
 
-    // pass file.buffer to service
-    return this.healthservice.createData({
-      ...payload,
-      fileBuffer: file.buffer,
-    });
-  }
+  //   // pass file.buffer to service
+  //   return this.healthservice.createData({
+  //     ...payload,
+  //     fileBuffer: file.buffer,
+  //   });
+  // }
 
   // 👉 get file back from DB
 //   @Get(":id/file")
@@ -96,5 +96,27 @@ export class HealthController {
 //     res.setHeader("Content-Type", "application/pdf"); // or detect mime-type dynamically
 //     res.send(health.file_upload);
 //   }
+
+
+
+
+@Post("apply")
+@UseInterceptors(FileInterceptor("file", multerConfig))
+async apply(
+  @UploadedFile() file: Express.Multer.File,
+  @Body() body: any
+): Promise<Health> {
+  let parsedFormData = {};
+  try {
+    parsedFormData = JSON.parse(body.formData); // parse JSON string back
+  } catch (e) {}
+
+  return this.healthservice.createData({
+    ...body,
+    formData: parsedFormData,
+    fileBuffer: file ? file.buffer : null,
+  });
+}
+
 }
 
