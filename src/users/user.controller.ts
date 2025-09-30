@@ -109,11 +109,10 @@ export class UserController {
     @Param('accident') accident?: string,
     @Param('opd') opd?: string,
     @Param('age') age?: string,
-
-
-
   ) {
+    
     if (!age) throw new BadRequestException('Age is required');
+    try{
     return this.userService.getInsurance(
       ipd !== undefined ? Number(ipd) : undefined,
       accident !== undefined ? Number(accident) : undefined,
@@ -121,16 +120,17 @@ export class UserController {
       Number(age),
     );
   }
+  catch(error){
+    throw new BadRequestException(error.message || 'error in fetching data');
+  }
 
+}
 
   @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
     @Param('ipd') ipd?: string,
     @Param('accident') accident?: string,
     @Param('age') age?: string,
-
-
-
   ) {
     if (!age) throw new BadRequestException('Age is required');
     return this.userService.getInsurance2(

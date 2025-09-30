@@ -182,7 +182,9 @@ async saveExcelData2(data: any[]): Promise<any> {
     if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
    if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
 
+
     const data = await query.getOne();
+    console.log("data",data);
   
     if (!data) throw new BadRequestException('No matching data found');
 

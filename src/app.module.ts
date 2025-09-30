@@ -49,6 +49,7 @@ import { UsersModule } from './users/user.module';
 import { Data1 } from './users/data.entity';
 import { Opd } from './users/opd.entity';
 import { Data2 } from './users/data2.entity';
+import { HealthModule } from './health/Health.module';
 
 @Module({
   imports: [
@@ -57,6 +58,7 @@ import { Data2 } from './users/data2.entity';
     }),
     AuthModule, 
     UsersModule,
+    HealthModule,
 
     // ✅ Use ConfigService for DB settings
     TypeOrmModule.forRootAsync({
