@@ -43,7 +43,8 @@ export class Health extends BaseEntity {
   @Column()
   dd_mm_yy:Date;
 
-  @Column()
+  // @Column()
+@Column({ type: 'bigint' })
   mobile_number:number;
 
   @Column()
