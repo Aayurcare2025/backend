@@ -7,7 +7,6 @@ import { Health } from './Health.entity';
 
 
 
-
 @Injectable()
 export class HealthService {
     constructor(
@@ -15,7 +14,7 @@ export class HealthService {
         private readonly HealthRepository: Repository<Health>,
       
       
-      ) {}
+    ) {}
 
 
 
@@ -40,8 +39,8 @@ async createData(payload: any): Promise<Health> {
       gender: payload.formData?.proposer?.gender,
       age: payload.age,
       email: payload.email,
-      phonenumber: payload.phonenumber,
-
+      phonenumber:String(payload.phonenumber),
+      // phonenumber: payload.phonenumber,
       firstName: payload.formData?.proposer?.firstName,
       lastName: payload.formData?.proposer?.lastName,
       dd_mm_yy: payload.formData?.proposer?.dob,
