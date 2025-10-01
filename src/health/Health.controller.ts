@@ -69,7 +69,12 @@ export class HealthController {
 
   
 
- 
+  //   // pass file.buffer to service
+  //   return this.healthservice.createData({
+  //     ...payload,
+  //     fileBuffer: file.buffer,
+  //   });
+  // }
 
   // 👉 get file back from DB
 //   @Get(":id/file")
