@@ -40,7 +40,7 @@ async createData(payload: any): Promise<Health> {
       gender: payload.formData?.proposer?.gender,
       age: payload.age,
       email: payload.email,
-      phonenumber: payload.phone,
+      phonenumber: payload.phonenumber,
 
       firstName: payload.formData?.proposer?.firstName,
       lastName: payload.formData?.proposer?.lastName,
