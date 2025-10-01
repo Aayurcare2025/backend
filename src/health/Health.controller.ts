@@ -55,12 +55,27 @@ import {
 import { HealthService } from "./Health.service";
 import { Health } from "./Health.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
-import { memoryStorage } from "multer";
+// import { memoryStorage } from "multer";
 import { Response } from "express";
+import * as os from "os";
+import { diskStorage } from "multer";
+import { extname } from "path";
+import { join } from "path";
 
 // Multer config to keep files in memory as Buffer
+// export const multerConfig = {
+//   storage: memoryStorage(),
+// };
+// const documentsPath = join(os.homedir(), "Documents");
+
 export const multerConfig = {
-  storage: memoryStorage(),
+  storage: diskStorage({
+    destination: `${os.homedir()}/Documents`, // <-- local folder
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+      cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+    },
+  }),
 };
 
 @Controller("health")
@@ -102,10 +117,14 @@ async apply(
     parsedFormData = JSON.parse(body.formData); // parse JSON string back
   } catch (e) {}
 
+
+    // Save file path instead of buffer
+    const filePath = file ? file.path : null;
   return this.healthservice.createData({
     ...body,
     formData: parsedFormData,
-    fileBuffer: file ? file.buffer : null,
+    // fileBuffer: file ? file.buffer : null,
+     filePath,
   });
 }
 

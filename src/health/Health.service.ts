@@ -47,8 +47,8 @@
         mobile_number: payload.formData?.proposer?.mobile,
         oocupation: payload.formData?.proposer?.occupation,
         // file_upload: payload.files, // handle separately (multer)
-      file_upload: payload.fileBuffer, // save buffer in DB
-
+      // file_upload: payload.fileBuffer, // save buffer in DB
+        file_upload: payload.filePath, 
         nominee_name: payload.formData?.nominee?.name,
         dd_mm_yyyy: payload.formData?.nominee?.dob,
         relation: payload.formData?.nominee?.relation,
