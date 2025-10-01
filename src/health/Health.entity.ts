@@ -28,7 +28,7 @@ export class Health extends BaseEntity {
   // @Column()
   // @Column({ type: 'bigint' })
   @Column({ type: 'varchar', length: 15 })
-  phonenumber:number;
+  phonenumber:string;
 
   //proposal details:
 
@@ -45,7 +45,7 @@ export class Health extends BaseEntity {
   // @Column()
 // @Column({ type: 'bigint' })
 @Column({ type: 'varchar', length: 15 })
-  mobile_number:number;
+  mobile_number:string;
 
   @Column()
   oocupation:string;
