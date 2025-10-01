@@ -27,7 +27,7 @@ export class Health extends BaseEntity {
 
   // @Column()
   // @Column({ type: 'bigint' })
-  @Column({ type: 'varchar', length: 15,nullable:true})
+  @Column({ type: 'varchar', length: 15, default: '' })
   phonenumber:string;
 
   //proposal details:
@@ -44,7 +44,7 @@ export class Health extends BaseEntity {
 
   // @Column()
 // @Column({ type: 'bigint' })
-@Column({ type: 'varchar', length: 15,nullable:true })
+@Column({ type: 'varchar', length: 15})
   mobile_number:string;
 
   @Column()
@@ -87,4 +87,4 @@ file_upload: Buffer;
 
 
 
-}
+}  //still same issue phonenumber has a default vaue
