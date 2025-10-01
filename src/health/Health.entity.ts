@@ -1,9 +1,6 @@
 import { IsEnum } from "class-validator";
 import multer, { Multer } from "multer";
 import { UserRole } from "src/enum/role.enum";
-
-
-
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
 @Entity({ name: 'health' })
 export class Health extends BaseEntity {
@@ -28,7 +25,8 @@ export class Health extends BaseEntity {
   @Column()
   email:string;
 
-  @Column()
+  // @Column()
+  @Column({ type: 'bigint' })
   phonenumber:number;
 
   //proposal details:
