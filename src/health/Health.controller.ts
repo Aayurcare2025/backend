@@ -67,23 +67,9 @@ export const multerConfig = {
 export class HealthController {
   constructor(private healthservice: HealthService) {}
 
-  // 👉 with file upload (apply)
-  // @Post("apply")
-  // @UseInterceptors(FileInterceptor("file", multerConfig)) // expecting "file" field in form-data
-  // async apply(
-  //   @UploadedFile() file: Express.Multer.File,
-  //   @Body() payload: any
-  // ): Promise<Health> {
-  //   if (!file) {
-  //     throw new BadRequestException("File is required");
-  //   }
+  
 
-  //   // pass file.buffer to service
-  //   return this.healthservice.createData({
-  //     ...payload,
-  //     fileBuffer: file.buffer,
-  //   });
-  // }
+ 
 
   // 👉 get file back from DB
 //   @Get(":id/file")
