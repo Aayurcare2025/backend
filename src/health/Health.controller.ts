@@ -1,132 +1,71 @@
-
-
-
-// import {
-//   BadRequestException, Body, Controller, Post, UnauthorizedException, ValidationPipe, UploadedFile,
-//   UseInterceptors,
-//   Get,
-//   Query,
-//   Param,
-// } from "@nestjs/common";
-// import { HealthService } from "./Health.service";
-// import { Health } from "./Health.entity";
-// import { diskStorage, memoryStorage } from 'multer';
-// //data
-
-// export const multerConfig = {
-//   storage: memoryStorage(), // keep files in memory as Buffer
-// };
-
-// @Controller('health')
-// export class HealthController {
-//   constructor(private healthservice: HealthService,
-   
-//   ) { }
-
-//    @Post('apply')
-//   async apply(@Body() payload: any): Promise<Health> {
-//     return this.healthservice.createData(payload);
-//   }
-
- 
-
-
-
-
-
-
-
-
-// }
-
-
-
-import {
-  BadRequestException,
-  Body,
-  Controller,
-  Post,
-  UploadedFile,
-  UseInterceptors,
-  Get,
-  Param,
-  Res,
-} from "@nestjs/common";
+import { Body, Controller, Post, UploadedFile, UseInterceptors } from "@nestjs/common";
 import { HealthService } from "./Health.service";
 import { Health } from "./Health.entity";
 import { FileInterceptor } from "@nestjs/platform-express";
-// import { memoryStorage } from "multer";
-import { Response } from "express";
-import * as os from "os";
-import { diskStorage } from "multer";
-import { extname } from "path";
-import { join } from "path";
+import { memoryStorage } from "multer";
+import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 
-// Multer config to keep files in memory as Buffer
-// export const multerConfig = {
-//   storage: memoryStorage(),
-// };
-// const documentsPath = join(os.homedir(), "Documents");
+// const s3 = new S3Client({
+//   region: process.env.AWS_REGION,
+//   credentials: {
+//     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+//     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+//   },
+// });
 
-export const multerConfig = {
-  storage: diskStorage({
-    destination: `${os.homedir()}/Documents`, // <-- local folder
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-      cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
-    },
-  }),
-};
+
+
+
+if (!process.env.AWS_REGION || !process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
+  throw new Error("AWS credentials or region not set in environment variables");
+}
+
+
+const s3 = new S3Client({
+  region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
 
 @Controller("health")
 export class HealthController {
-  constructor(private healthservice: HealthService) {}
+  constructor(private readonly healthservice: HealthService) {}
 
-  
+  @Post("apply")
+  @UseInterceptors(FileInterceptor("file", { storage: memoryStorage() }))
+  async apply(
+    @UploadedFile() file: Express.Multer.File,
+    @Body() body: any
+  ): Promise<Health> {
+    let parsedFormData = {};
+    try { parsedFormData = JSON.parse(body.formData); } catch (e) {}
 
-  //   // pass file.buffer to service
-  //   return this.healthservice.createData({
-  //     ...payload,
-  //     fileBuffer: file.buffer,
-  //   });
-  // }
+    let s3FileUrl: string | null = null;
 
-  // 👉 get file back from DB
-//   @Get(":id/file")
-//   async getFile(@Param("id") id: number, @Res() res: Response) {
-//     const health = await this.healthservice.findOne(id);
-//     if (!health?.file_upload) {
-//       throw new BadRequestException("File not found");
-//     }
+    if (file) {
+      const fileName = `${Date.now()}-${file.originalname}`;
+      const bucketName = process.env.AWS_BUCKET_NAME;
+      const region = process.env.AWS_REGION;
 
-//     res.setHeader("Content-Type", "application/pdf"); // or detect mime-type dynamically
-//     res.send(health.file_upload);
-//   }
+      await s3.send(
+        new PutObjectCommand({
+          Bucket: bucketName,
+          Key: fileName,
+          Body: file.buffer,
+          ContentType: file.mimetype,
+        })
+      );
 
+      s3FileUrl = `https://${bucketName}.s3.${region}.amazonaws.com/${fileName}`;
+    }
 
-
-
-@Post("apply")
-@UseInterceptors(FileInterceptor("file", multerConfig))
-async apply(
-  @UploadedFile() file: Express.Multer.File,
-  @Body() body: any
-): Promise<Health> {
-  let parsedFormData = {};
-  try {
-    parsedFormData = JSON.parse(body.formData); // parse JSON string back
-  } catch (e) {}
-
-
-    // Save file path instead of buffer
-    const filePath = file ? file.path : null;
-  return this.healthservice.createData({
-    ...body,
-    formData: parsedFormData,
-    // fileBuffer: file ? file.buffer : null,
-     filePath,
-  });
+    return this.healthservice.createData({
+      ...body,
+      formData: parsedFormData,
+      filePath: s3FileUrl,
+    });
+  }
 }
-
-}
-
