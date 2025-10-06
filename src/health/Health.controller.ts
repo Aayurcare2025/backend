@@ -13,9 +13,6 @@ import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 //   },
 // });
 
-
-
-
 if (!process.env.AWS_REGION || !process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY) {
   throw new Error("AWS credentials or region not set in environment variables");
 }
@@ -47,6 +44,7 @@ export class HealthController {
 
     if (file) {
       const fileName = `${Date.now()}-${file.originalname}`;
+      
       const bucketName = process.env.AWS_BUCKET_NAME;
       const region = process.env.AWS_REGION;
 
@@ -56,6 +54,8 @@ export class HealthController {
           Key: fileName,
           Body: file.buffer,
           ContentType: file.mimetype,
+         ServerSideEncryption: "aws:kms",
+        SSEKMSKeyId: process.env.AWS_KMS_KEY_ID,
         })
       );
 

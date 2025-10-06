@@ -181,7 +181,7 @@ async saveExcelData2(data: any[]): Promise<any> {
     if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
     if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
    if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
-
+    
 
     const data = await query.getOne();
     console.log("data",data);
