@@ -12,10 +12,10 @@ export class User extends BaseEntity {
   @Column({ name: 'full_name' })
   fullName: string;
 
-  @Column()
+  @Column({unique:true})
   email: string;
 
-  @Column()
+  @Column({unique:true})
   username: string;
 
   @Column()
