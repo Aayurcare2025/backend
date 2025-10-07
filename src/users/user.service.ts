@@ -173,42 +173,44 @@ async saveExcelData2(data: any[]): Promise<any> {
   }
   return { message: 'Excel data saved successfully', saved: savedUsers.length };
 }
-  // async getInsurance(ipd?: number, accident?: number, opd?: number, age?: number) {
-  //   if (age === undefined) throw new BadRequestException('Age is required');
 
-  //   const query = this.data1Repository.createQueryBuilder('data');
+//get for insurance:-
+  async getInsurance(ipd?: number, accident?: number, opd?: number, age?: number) {
+    if (age === undefined) throw new BadRequestException('Age is required');
 
-  //   if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
-  //   if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
-  //  if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
+    const query = this.data1Repository.createQueryBuilder('data');
+
+    if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
+    if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
+   if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
     
 
-  //   const data = await query.getOne();
-  //   console.log("data",data);
+    const data = await query.getOne();
+    console.log("data",data);
   
-  //   if (!data) throw new BadRequestException('No matching data found');
+    if (!data) throw new BadRequestException('No matching data found');
 
-  //   let premium: number | null = null;
+    let premium: number | null = null;
 
     
-  //   if (age <= 20) premium = data.Age_less_than_equal_to_20_yrs;
-  //   else if (age <= 35) premium = data.Age_is_21_to_35_yrs;
-  //   else if (age <= 45) premium = data.Age_is_36_to_45_yrs;
-  //   else if (age <= 55) premium = data.Age_is_46_to_55_yrs;
-  //   else if (age <= 60) premium = data.Age_is_56_to_60_yrs;
-  //   else if (age <= 70) premium = data.Age_is_61_to_70_yrs;
-  //   else if (age <= 80) premium = data.Age_is_71_to_80_yrs;
-  //   else premium = data.Age_is_above_80_yrs;
+    if (age <= 20) premium = data.Age_less_than_equal_to_20_yrs;
+    else if (age <= 35) premium = data.Age_is_21_to_35_yrs;
+    else if (age <= 45) premium = data.Age_is_36_to_45_yrs;
+    else if (age <= 55) premium = data.Age_is_46_to_55_yrs;
+    else if (age <= 60) premium = data.Age_is_56_to_60_yrs;
+    else if (age <= 70) premium = data.Age_is_61_to_70_yrs;
+    else if (age <= 80) premium = data.Age_is_71_to_80_yrs;
+    else premium = data.Age_is_above_80_yrs;
 
-  //   return {
-  //     total_sum_insured: data.Total_sum_insured,
-  //     premium,
-  //   };
-  // }
+    return {
+      total_sum_insured: data.Total_sum_insured,
+      premium,
+    };
+  }
 
 
 
-  async getInsurance(ipd?: number, accident?: number, opd?: number, ages?: number[]) {
+  async getInsurancee(ipd?: number, accident?: number, opd?: number, ages?: number[]) {
   if (!ages || ages.length === 0) {
     throw new BadRequestException('At least one age is required');
   }
