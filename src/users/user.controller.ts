@@ -103,28 +103,58 @@ export class UserController {
 
   //incoming data age should be >< ie specific condition..
 
-  @Get('/insurance/:ipd/:accident/:opd/:age')
-  async getInsurance(
-    @Param('ipd') ipd?: string,
-    @Param('accident') accident?: string,
-    @Param('opd') opd?: string,
-    @Param('age') age?: string,
-  ) {
+//   @Get('/insurance/:ipd/:accident/:opd/:age')
+//   async getInsurance(
+//     @Param('ipd') ipd?: string,
+//     @Param('accident') accident?: string,
+//     @Param('opd') opd?: string,
+//     @Param('age') age?: string,
+//   ) {
     
-    if (!age) throw new BadRequestException('Age is required');
-    try{
-    return this.userService.getInsurance(
-      ipd !== undefined ? Number(ipd) : undefined,
-      accident !== undefined ? Number(accident) : undefined,
-      opd !== undefined ? Number(opd) : undefined,
-      Number(age),
-    );
-  }
-  catch(error){
-    throw new BadRequestException(error.message || 'error in fetching data');
-  }
+//     if (!age) throw new BadRequestException('Age is required');
+//     try{
+//     return this.userService.getInsurance(
+//       ipd !== undefined ? Number(ipd) : undefined,
+//       accident !== undefined ? Number(accident) : undefined,
+//       opd !== undefined ? Number(opd) : undefined,
+//       Number(age),
+//     );
+//   }
+//   catch(error){
+//     throw new BadRequestException(error.message || 'error in fetching data');
+//   }
 
+// }
+
+
+//query parameter for isnurance age wise:-
+@Get('/insurance')
+async getInsurance(
+  @Query('ipd') ipd?: string,
+  @Query('accident') accident?: string,
+  @Query('opd') opd?: string,
+  @Query('ages') ages?: string, // comma-separated string of ages
+) {
+  if (!ages) throw new BadRequestException('Ages are required');
+
+  // Convert comma-separated string to array of numbers
+  const ageArray = ages.split(',').map(age => Number(age.trim()));
+
+  return this.userService.getInsurance(
+    ipd ? Number(ipd) : undefined,
+    accident ? Number(accident) : undefined,
+    opd ? Number(opd) : undefined,
+    ageArray, // Pass the array instead of single number
+  );
 }
+
+
+
+
+
+
+
+
 
   @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
