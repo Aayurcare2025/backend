@@ -126,38 +126,6 @@ export class UserController {
 
 }
 
-
-//query parameter for isnurance age wise:-
-@Get('/insurance')
-async getInsurancee(
-  @Query('ipd') ipd?: string,
-  @Query('accident') accident?: string,
-  @Query('opd') opd?: string,
-  @Query('ages') ages?: string, 
-  // comma-separated string of ages
-
-) {
-  if (!ages) throw new BadRequestException('Ages are required');
-
-  // Convert comma-separated string to array of numbers
-  const ageArray = ages.split(',').map(age => Number(age.trim()));
-
-  return this.userService.getInsurancee(
-    ipd ? Number(ipd) : undefined,
-    accident ? Number(accident) : undefined,
-    opd ? Number(opd) : undefined,
-    ageArray, // Pass the array instead of single number
-  );
-}
-
-
-
-
-
-
-
-
-
   @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
     @Param('ipd') ipd?: string,
