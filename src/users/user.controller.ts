@@ -103,6 +103,8 @@ export class UserController {
 
   //incoming data age should be >< ie specific condition..
 
+
+
   @Get('/insurance/:ipd/:accident/:opd/:age')
   async getInsurance(
     @Param('ipd') ipd?: string,
@@ -110,7 +112,6 @@ export class UserController {
     @Param('opd') opd?: string,
     @Param('age') age?: string,
   ) {
-    
     if (!age) throw new BadRequestException('Age is required');
     try{
     return this.userService.getInsurance(
@@ -126,39 +127,6 @@ export class UserController {
 
 }
 
-
- @Get('/insurance/family/:ipd/:accident/:opd/:ages')
-  async getFamilyInsurance(
-    @Param('ipd') ipd?: string,
-    @Param('accident') accident?: string,
-    @Param('opd') opd?: string,
-    @Param('ages') ages?: string, // comma-separated ages
-  ) {
-    if (!ages) throw new BadRequestException('Ages are required');
-    
-    // Convert comma-separated string into number array
-    const agesArray = ages.split(',').map(ageStr => {
-      const ageNum = Number(ageStr.trim());
-      if (isNaN(ageNum)) throw new BadRequestException(`Invalid age: ${ageStr}`);
-      return ageNum;
-    });
-
-    try {
-      return this.userService.getFamilyInsurance(
-        ipd !== undefined ? Number(ipd) : undefined,
-        accident !== undefined ? Number(accident) : undefined,
-        opd !== undefined ? Number(opd) : undefined,
-        agesArray,
-      );
-    } catch (error) {
-      throw new BadRequestException(error.message || 'Error in fetching family insurance');
-    }
-  }
-
-
-
-
-
   @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
     @Param('ipd') ipd?: string,
@@ -173,6 +141,71 @@ export class UserController {
     );
   }
 
+
+
+
+  @Get('/insurance/combined/:ipd/:accident/:opd/:selfAge/:dependentsAges')
+async getCombinedInsurance(
+  @Param('ipd') ipd?: string,
+  @Param('accident') accident?: string,
+  @Param('opd') opd?: string,
+  @Param('selfAge') selfAge?: string,
+  @Param('dependentsAges') dependentsAges?: string // "25,28,55"
+) {
+  if (!selfAge) throw new BadRequestException('Self age is required');
+
+  const dependentsArray = dependentsAges
+    ? dependentsAges.split(',').map(a => Number(a.trim()))
+    : [];
+
+  try {
+    return this.userService.getCombinedInsurance(
+      ipd ? Number(ipd) : undefined,
+      accident ? Number(accident) : undefined,
+      opd ? Number(opd) : undefined,
+      Number(selfAge),
+      dependentsArray,
+    );
+  } catch (error) {
+    throw new BadRequestException(error.message || 'Error calculating combined premium');
+  }
+}
+
+
+ @Get('/insurance/combinedIpdAndAccident/:ipd/:accident/:selfAge/:dependentsAges')
+async getCombinedInsuranceIpdAndAccident(
+  @Param('ipd') ipd?: string,
+  @Param('accident') accident?: string,
+  @Param('selfAge') selfAge?: string,
+  @Param('dependentsAges') dependentsAges?: string // "25,28,55"
+) {
+  if (!selfAge) throw new BadRequestException('Self age is required');
+
+  const dependentsArray = dependentsAges
+    ? dependentsAges.split(',').map(a => Number(a.trim()))
+    : [];
+
+  try {
+    return this.userService.getCombinedInsuranceIpdAndAccident(
+      ipd ? Number(ipd) : undefined,
+      accident ? Number(accident) : undefined,
+      Number(selfAge),
+      dependentsArray,
+    );
+  } catch (error) {
+    throw new BadRequestException(error.message || 'Error calculating combined premium');
+  }
+}
+
+
+
+
+
+
+
+
+
+  
 
 
 

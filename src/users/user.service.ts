@@ -182,9 +182,12 @@ async saveExcelData2(data: any[]): Promise<any> {
     if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
    if(opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
     
+   //datahas to be
 
     const data = await query.getOne();
     console.log("data",data);
+
+    //d
   
     if (!data) throw new BadRequestException('No matching data found');
 
@@ -198,6 +201,8 @@ async saveExcelData2(data: any[]): Promise<any> {
     else if (age <= 70) premium = data.Age_is_61_to_70_yrs;
     else if (age <= 80) premium = data.Age_is_71_to_80_yrs;
     else premium = data.Age_is_above_80_yrs;
+
+    
 
     return {
       total_sum_insured: data.Total_sum_insured,
@@ -220,6 +225,7 @@ async saveExcelData2(data: any[]): Promise<any> {
     if (!data) throw new BadRequestException('No matching data found');
 
     let premium: number | null = null;
+    
 
     if (age <= 20) premium = data.Age_less_than_equal_to_20_yrs;
     else if (age <= 35) premium = data.Age_is_21_to_35_yrs;
@@ -237,8 +243,17 @@ async saveExcelData2(data: any[]): Promise<any> {
   }
 
 
-  async getFamilyInsurance(ipd?: number, accident?: number, opd?: number, ages?: number[]) {
-  if (!ages || ages.length === 0) throw new BadRequestException('Ages are required');
+  
+
+
+async getCombinedInsurance(
+  ipd?: number,
+  accident?: number,
+  opd?: number,
+  selfAge?: number,
+  dependentsAges?: number[]
+) {
+  if (selfAge === undefined) throw new BadRequestException('Self age is required');
 
   const query = this.data1Repository.createQueryBuilder('data');
 
@@ -249,7 +264,8 @@ async saveExcelData2(data: any[]): Promise<any> {
   const data = await query.getOne();
   if (!data) throw new BadRequestException('No matching data found');
 
-  const premiums = ages.map(age => {
+  // Helper to get premium by age
+  const getPremium = (age: number): number => {
     if (age <= 20) return data.Age_less_than_equal_to_20_yrs;
     else if (age <= 35) return data.Age_is_21_to_35_yrs;
     else if (age <= 45) return data.Age_is_36_to_45_yrs;
@@ -258,13 +274,94 @@ async saveExcelData2(data: any[]): Promise<any> {
     else if (age <= 70) return data.Age_is_61_to_70_yrs;
     else if (age <= 80) return data.Age_is_71_to_80_yrs;
     else return data.Age_is_above_80_yrs;
-  });
+  };
+
+  // Self premium
+  const selfPremium = getPremium(selfAge);
+
+  // Dependents premium (1 or many)
+  const dependentsPremiums = (dependentsAges || []).map(age => ({
+    age,
+    premium: getPremium(age),
+  }));
+
+  const totalDependentsPremium = dependentsPremiums.reduce(
+    (sum, item) => sum + item.premium,
+    0
+  );
+
+  // Final total
+  const totalAnnualPremium = selfPremium + totalDependentsPremium;
 
   return {
     total_sum_insured: data.Total_sum_insured,
-    premiums,  // array of premiums corresponding to the input ages
+    self: { age: selfAge, premium: selfPremium },
+    dependents: dependentsPremiums, // shows each dependent's premium
+    total_annual_premium: totalAnnualPremium,
   };
 }
+
+
+
+
+async getCombinedInsuranceIpdAndAccident(
+  ipd?: number,
+  accident?: number,
+  selfAge?: number,
+  dependentsAges?: number[]
+) {
+  if (selfAge === undefined) throw new BadRequestException('Self age is required');
+
+  const query = this.data2Repository.createQueryBuilder('data');
+
+  if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
+  if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
+
+
+  const data = await query.getOne();
+  if (!data) throw new BadRequestException('No matching data found');
+
+  // Helper to get premium by age
+  const getPremium = (age: number): number => {
+    if (age <= 20) return data.Age_less_than_equal_to_20_yrs;
+    else if (age <= 35) return data.Age_is_21_to_35_yrs;
+    else if (age <= 45) return data.Age_is_36_to_45_yrs;
+    else if (age <= 55) return data.Age_is_46_to_55_yrs;
+    else if (age <= 60) return data.Age_is_56_to_60_yrs;
+    else if (age <= 70) return data.Age_is_61_to_70_yrs;
+    else if (age <= 80) return data.Age_is_71_to_80_yrs;
+    else return data.Age_is_above_80_yrs;
+  };
+
+  // Self premium
+  const selfPremium = getPremium(selfAge);
+
+  // Dependents premium (1 or many)
+  const dependentsPremiums = (dependentsAges || []).map(age => ({
+    age,
+    premium: getPremium(age),
+  }));
+
+  const totalDependentsPremium = dependentsPremiums.reduce(
+    (sum, item) => sum + item.premium,
+    0
+  );
+
+  // Final total
+  const totalAnnualPremium = selfPremium + totalDependentsPremium;
+
+  return {
+    total_sum_insured: data.Total_sum_insured,
+    self: { age: selfAge, premium: selfPremium },
+    dependents: dependentsPremiums, // shows each dependent's premium
+    total_annual_premium: totalAnnualPremium,
+  };
+}
+
+
+
+
+
 
 }
 
