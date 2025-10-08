@@ -126,6 +126,39 @@ export class UserController {
 
 }
 
+
+ @Get('/insurance/family/:ipd/:accident/:opd/:ages')
+  async getFamilyInsurance(
+    @Param('ipd') ipd?: string,
+    @Param('accident') accident?: string,
+    @Param('opd') opd?: string,
+    @Param('ages') ages?: string, // comma-separated ages
+  ) {
+    if (!ages) throw new BadRequestException('Ages are required');
+    
+    // Convert comma-separated string into number array
+    const agesArray = ages.split(',').map(ageStr => {
+      const ageNum = Number(ageStr.trim());
+      if (isNaN(ageNum)) throw new BadRequestException(`Invalid age: ${ageStr}`);
+      return ageNum;
+    });
+
+    try {
+      return this.userService.getFamilyInsurance(
+        ipd !== undefined ? Number(ipd) : undefined,
+        accident !== undefined ? Number(accident) : undefined,
+        opd !== undefined ? Number(opd) : undefined,
+        agesArray,
+      );
+    } catch (error) {
+      throw new BadRequestException(error.message || 'Error in fetching family insurance');
+    }
+  }
+
+
+
+
+
   @Get('/insurance/:ipd/:accident/:age')
   async getInsurance2(
     @Param('ipd') ipd?: string,

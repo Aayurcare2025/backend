@@ -235,6 +235,37 @@ async saveExcelData2(data: any[]): Promise<any> {
       premium,
     };
   }
+
+
+  async getFamilyInsurance(ipd?: number, accident?: number, opd?: number, ages?: number[]) {
+  if (!ages || ages.length === 0) throw new BadRequestException('Ages are required');
+
+  const query = this.data1Repository.createQueryBuilder('data');
+
+  if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
+  if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
+  if (opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
+
+  const data = await query.getOne();
+  if (!data) throw new BadRequestException('No matching data found');
+
+  const premiums = ages.map(age => {
+    if (age <= 20) return data.Age_less_than_equal_to_20_yrs;
+    else if (age <= 35) return data.Age_is_21_to_35_yrs;
+    else if (age <= 45) return data.Age_is_36_to_45_yrs;
+    else if (age <= 55) return data.Age_is_46_to_55_yrs;
+    else if (age <= 60) return data.Age_is_56_to_60_yrs;
+    else if (age <= 70) return data.Age_is_61_to_70_yrs;
+    else if (age <= 80) return data.Age_is_71_to_80_yrs;
+    else return data.Age_is_above_80_yrs;
+  });
+
+  return {
+    total_sum_insured: data.Total_sum_insured,
+    premiums,  // array of premiums corresponding to the input ages
+  };
+}
+
 }
 
 
