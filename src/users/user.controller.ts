@@ -119,6 +119,7 @@ export class UserController {
       accident !== undefined ? Number(accident) : undefined,
       opd !== undefined ? Number(opd) : undefined,
       Number(age),
+    
     );
   }
   catch(error){
@@ -150,7 +151,7 @@ async getCombinedInsurance(
   @Param('accident') accident?: string,
   @Param('opd') opd?: string,
   @Param('selfAge') selfAge?: string,
-  @Param('dependentsAges') dependentsAges?: string // "25,28,55"
+  @Param('dependentsAges') dependentsAges?: string 
 ) {
   if (!selfAge) throw new BadRequestException('Self age is required');
 
@@ -159,6 +160,7 @@ async getCombinedInsurance(
     : [];
 
   try {
+    //
     return this.userService.getCombinedInsurance(
       ipd ? Number(ipd) : undefined,
       accident ? Number(accident) : undefined,
@@ -166,9 +168,11 @@ async getCombinedInsurance(
       Number(selfAge),
       dependentsArray,
     );
+    
   } catch (error) {
     throw new BadRequestException(error.message || 'Error calculating combined premium');
   }
+  
 }
 
 

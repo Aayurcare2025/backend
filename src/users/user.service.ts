@@ -257,6 +257,7 @@ async getCombinedInsurance(
 
   const query = this.data1Repository.createQueryBuilder('data');
 
+
   if (ipd !== undefined) query.andWhere('data.IPD = :ipd', { ipd });
   if (accident !== undefined) query.andWhere('data.Accident = :accident', { accident });
   if (opd !== undefined) query.andWhere('data.OPD = :opd', { opd });
@@ -291,10 +292,23 @@ async getCombinedInsurance(
   );
 
   // Final total
+
+
   const totalAnnualPremium = selfPremium + totalDependentsPremium;
+  //count of dependancy in a  count of the
+
+  const countOfDependents = dependentsAges?.length || 0;
+   
+// const totalSumInsuredIncludingDependents = data.Total_sum_insured * (1 + countOfDependents);
+const total=0;
+
+ 
+  
 
   return {
-    total_sum_insured: data.Total_sum_insured,
+    // total_sum_insured: data.Total_sum_insured,
+    total_sum_insured:data.Total_sum_insured*(1+countOfDependents),
+    // data.Total_sum_insured * (1 + countOfDependents)
     self: { age: selfAge, premium: selfPremium },
     dependents: dependentsPremiums, // shows each dependent's premium
     total_annual_premium: totalAnnualPremium,
@@ -349,7 +363,6 @@ async getCombinedInsuranceIpdAndAccident(
 
   // Final total
   const totalAnnualPremium = selfPremium + totalDependentsPremium;
-
   return {
     total_sum_insured: data.Total_sum_insured,
     self: { age: selfAge, premium: selfPremium },
