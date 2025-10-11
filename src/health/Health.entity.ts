@@ -1,82 +1,82 @@
-import { IsEnum } from "class-validator";
-import multer, { Multer } from "multer";
-import { UserRole } from "src/enum/role.enum";
-import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
-@Entity({ name: 'health' })
-export class Health extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+// import { IsEnum } from "class-validator";
+// import multer, { Multer } from "multer";
+// import { UserRole } from "src/enum/role.enum";
+// import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm"
+// @Entity({ name: 'health' })
+// export class Health extends BaseEntity {
+//   @PrimaryGeneratedColumn()
+//   id: number;
 
-  @Column()
-  buy:string;
+//   @Column()
+//   buy:string;
 
-  @Column()
-  ensure:string;
+//   @Column()
+//   ensure:string;
 
-  @Column()
-  pincode:number;
+//   @Column()
+//   pincode:number;
 
-  @Column()
-  gender:string;
+//   @Column()
+//   gender:string;
 
-  @Column()
-  age:number;
+//   @Column()
+//   age:number;
 
-  @Column()
-  email:string;
+//   @Column()
+//   email:string;
 
-  // @Column()
-  // // @Column({ type: 'bigint' })
-  @Column({ type: 'varchar', length: 15})
-  phonenumber:string;
+//   // @Column()
+//   // // @Column({ type: 'bigint' })
+//   @Column({ type: 'varchar', length: 15})
+//   phonenumber:string;
 
-  //proposal details:
+//   //proposal details:
 
-  @Column()
-  firstName:string;
-
-
-  @Column()
-  lastName:string;
-
-  @Column()
-  dd_mm_yy:Date;
-
-  // @Column()
-// @Column({ type: 'bigint' })
-@Column({ type: 'varchar', length: 15})
-  mobile_number:string;
-
-  @Column()
-  oocupation:string;
-
-  // @Column()
-  // file_upload:string;
+//   @Column()
+//   firstName:string;
 
 
-  @Column({ type: "mediumblob", nullable: true })
-file_upload: Buffer;
+//   @Column()
+//   lastName:string;
 
-  @Column()
-  nominee_name:string;
+//   @Column()
+//   dd_mm_yy:Date;
+
+//   // @Column()
+// // @Column({ type: 'bigint' })
+// @Column({ type: 'varchar', length: 15})
+//   mobile_number:string;
+
+//   @Column()
+//   oocupation:string;
+
+//   // @Column()
+//   // file_upload:string;
 
 
-  @Column()
-  dd_mm_yyyy:Date;
+//   @Column({ type: "mediumblob", nullable: true })
+// file_upload: Buffer;
 
-  @Column()
-  relation:string;
-
-
-  @Column()
-  selectedopdvalue:number;
+//   @Column()
+//   nominee_name:string;
 
 
-  @Column()
-  selectedipdvalue:number;
+//   @Column()
+//   dd_mm_yyyy:Date;
 
-  @Column()
-  selectedaccidentvalue:number;
+//   @Column()
+//   relation:string;
+
+
+//   @Column()
+//   selectedopdvalue:number;
+
+
+//   @Column()
+//   selectedipdvalue:number;
+
+//   @Column()
+//   selectedaccidentvalue:number;
 
 
 
@@ -87,4 +87,69 @@ file_upload: Buffer;
 
 
 
-}  //still same issue phonenumber has a default vaue
+// }  //still same issue phonenumber has a default vaue
+
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+@Entity({ name: 'health' })
+export class Health extends BaseEntity {
+  @PrimaryGeneratedColumn()
+  id: number;
+
+  @Column()
+  buy: string;
+
+  @Column()
+  ensure: string;
+
+  @Column()
+  pincode: number;
+
+  @Column()
+  gender: string;
+
+  @Column()
+  age: number;
+
+  @Column()
+  email: string;
+
+  @Column({ type: 'varchar', length: 15 })
+  phonenumber: string;
+
+  @Column()
+  firstName: string;
+
+  @Column()
+  lastName: string;
+
+  @Column()
+  dd_mm_yy: Date;
+
+  @Column({ type: 'varchar', length: 15 })
+  mobile_number: string;
+
+  @Column()
+  oocupation: string;
+
+  @Column({ type: 'text', nullable: true })
+  file_upload: string; // store S3 URL
+
+  @Column()
+  nominee_name: string;
+
+  @Column()
+  dd_mm_yyyy: Date;
+
+  @Column()
+  relation: string;
+
+  @Column()
+  selectedopdvalue: number;
+
+  @Column()
+  selectedipdvalue: number;
+
+  @Column()
+  selectedaccidentvalue: number;
+}
