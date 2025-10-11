@@ -33,6 +33,7 @@
   //whats the iss
 
   async createData(payload: any): Promise<Health> {
+    const nomineedob = payload.dd_mm_yyyy ? new Date(payload.dd_mm_yyyy) : new Date(); // default to today
       const health = this.HealthRepository.create({
         buy: payload.product,
         ensure: payload.insured,
@@ -51,7 +52,7 @@
       // file_upload: payload.fileBuffer, // save buffer in DB
         file_upload: payload.filePath, 
         nominee_name: payload.formData?.nominee?.name,
-        dd_mm_yyyy: payload.formData?.nominee?.dob,
+        dd_mm_yyyy: nomineedob,
         relation: payload.formData?.nominee?.relation,
         selectedopdvalue: payload.OPDValue,
         selectedipdvalue: payload.IPDValue,

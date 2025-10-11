@@ -138,8 +138,12 @@ export class Health extends BaseEntity {
   @Column()
   nominee_name: string;
 
-  @Column()
-  dd_mm_yyyy: Date;
+  // @Column()
+  // dd_mm_yyyy: Date;
+
+  @Column({ type: 'date', nullable: true })
+dd_mm_yyyy: Date;
+
 
   @Column()
   relation: string;
