@@ -32,6 +32,7 @@ export class HealthController {
       parsedFormData = JSON.parse(body.formData);
     } catch (e) {
       // ignore parse error
+      console.log("eror happening",e);
     }
 
     let s3FileUrl: string | null = null;

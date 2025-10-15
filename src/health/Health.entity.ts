@@ -111,7 +111,7 @@ export class Health extends BaseEntity {
   @Column()
   age: number;
 
-  @Column()
+  @Column({unique:true})
   email: string;
 
   @Column({ type: 'varchar', length: 15 })
@@ -123,10 +123,10 @@ export class Health extends BaseEntity {
   @Column()
   lastName: string;
 
-  @Column()
-  dd_mm_yy: Date;
+  // @Column()
+  // dd_mm_yy: Date;
 
-  @Column({ type: 'varchar', length: 15 })
+  @Column({ type: 'varchar', length: 15 ,unique:true})
   mobile_number: string;
 
   @Column()
@@ -135,8 +135,8 @@ export class Health extends BaseEntity {
   @Column({ type: 'text', nullable: true })
   file_upload: string; // store S3 URL
 
-  @Column()
-  nominee_name: string;
+  // @Column()
+  // nominee_name: string;
 
   // @Column()
   // dd_mm_yyyy: Date;
@@ -145,8 +145,8 @@ export class Health extends BaseEntity {
 dd_mm_yyyy: Date;
 
 
-  @Column()
-  relation: string;
+  // @Column()
+  // relation: string;
 
   @Column()
   selectedopdvalue: number;
