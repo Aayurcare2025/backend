@@ -1,9 +1,12 @@
+  // async applyInsurance(insuranceDto: InsuranceDto): Promise<Insurance> {
 import { Module } from '@nestjs/common';
 
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Claims } from './Claims.entity';
 import { ClaimsService } from './Claims.service';
 import { ClaimsController } from './Claims.controller';
+
+
 
 
 @Module({

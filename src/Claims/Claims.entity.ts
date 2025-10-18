@@ -1,35 +1,89 @@
+// import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+
+// @Entity()
+// export class Claims{
+//  @PrimaryGeneratedColumn()
+//   id: number;
+
+//   @Column()
+//   Name:string;
+
+//   @Column()
+//   PhoneNumber:number;
+
+//   @Column()
+//   Email:string;
+
+//   //select aadharcard,pan card,driving license,passport
+//   @Column()
+//   kycdocument:string;
+
+
+
+//   //select consultation,prescription,radiology,pathology
+//   @Column()
+//   ConsultationType:string
+
+
+//   @Column()
+//   FileUpload:File;
+
+
+
+
+
+
+
+// }
+
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
-export class Claims{
- @PrimaryGeneratedColumn()
-  id: number;
+@Entity({name:"claims"})
+export class Claims
+{
 
-  @Column()
-  Name:string;
+@PrimaryGeneratedColumn()
+id:number;
 
-  @Column()
-  PhoneNumber:number;
+@Column()
+name:string;
 
-  @Column()
-  Email:string;
-
-  //select aadharcard,pan card,driving license,passport
-  @Column()
-  kycdocument:string;
+@Column()
+phonenumber:string;
 
 
+@Column({nullable:true})
+emailid:string;
 
-  //select consultation,prescription,radiology,pathology
-  @Column()
-  ConsultationType:string
+@Column()
+kycdocument:string;
+
+@Column()
+consultationtype:string; 
+
+@Column({ type: 'text', nullable: true })
+  file_upload: string;
 
 
-  @Column()
-  FileUpload:File;
+@Column()
+accountHolderName:string;
 
 
+@Column()
+bankAccountNumber:string
 
+@Column()
+reEnterAccountNumber:string;
+
+
+@Column()
+IFSCCode:string;
+
+@Column()
+BankName:string;
+
+@Column()
+BankBranchName:string;
 
 
 
