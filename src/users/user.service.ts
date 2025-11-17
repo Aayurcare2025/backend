@@ -226,7 +226,6 @@ async saveExcelData2(data: any[]): Promise<any> {
 
     let premium: number | null = null;
     
-
     if (age <= 20) premium = data.Age_less_than_equal_to_20_yrs;
     else if (age <= 35) premium = data.Age_is_21_to_35_yrs;
     else if (age <= 45) premium = data.Age_is_36_to_45_yrs;

@@ -51,6 +51,8 @@ import { Opd } from './users/opd.entity';
 import { Data2 } from './users/data2.entity';
 import { HealthModule } from './health/Health.module';
 import { ClaimsModule } from './Claims/Claims.module';
+import { CardsModule } from './cards/cards.module';
+import { Cards } from './cards/cards.entity';
 
 @Module({
   imports: [
@@ -61,8 +63,9 @@ import { ClaimsModule } from './Claims/Claims.module';
     UsersModule,
     HealthModule,
     ClaimsModule,
+    CardsModule,
 
-    // ✅ Use ConfigService for DB settings
+    // ✅ Use ConfigService for DB settings 
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -73,7 +76,7 @@ import { ClaimsModule } from './Claims/Claims.module';
         username: config.get<string>('DB_USERNAME'),
         password: config.get<string>('DB_PASSWORD'),
         database: config.get<string>('DB_NAME'),
-        entities: [User, Data1,Data2, Opd],
+        entities: [User, Data1,Data2, Opd,Cards],
         autoLoadEntities: true,
         synchronize: true,
       }),
