@@ -10,21 +10,14 @@ export class UserDto {
   @IsEmail({}, { message: "Invalid email format" })
   email: string;
 
-  @IsNotEmpty()
-  @IsString()
-  username: string;
 
   @IsNotEmpty()
   @IsString()
   @MinLength(6, { message: "Password must be at least 6 characters long" })
   password: string;
 
-  @IsNotEmpty()
-  @IsString()
-  confirmPassword: string;
-
   // @IsEnum(UserRole, { message: "Role must be a valid UserRole" })
   // role: UserRole;
   // @IsEnum(UserRole, { message: "Role must be a valid UserRole" }) 
-  role: UserRole;
+  role?: UserRole;
 }

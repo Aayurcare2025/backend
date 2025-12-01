@@ -10,9 +10,9 @@ export class AuthService {
         private configService: ConfigService,
         private jwtService: JwtService) { }
 
-    async signIn(username: string, password: string): Promise<any> {
-        console.log("Creds ", username, password)
-        const user = await this.usersService.findOne(username);
+    async signIn(email: string, password: string): Promise<any> {
+        console.log("Creds ", email, password)
+        const user = await this.usersService.findOne(email);
         if (!user) {
             throw new HttpException(
                 "Invalid Username",
@@ -33,7 +33,9 @@ export class AuthService {
             );
         }
 
-        const payload = { id: user.id, username: user.username, role:user.role };
+
+        
+        const payload = { id: user.id, email: user.email, role:user.role };
 
         const accessToken = this.jwtService.sign(payload, { expiresIn: this.configService.get("EXPIRES_IN") });
         return {

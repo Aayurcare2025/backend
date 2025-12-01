@@ -9,14 +9,11 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ name: 'full_name' })
+  @Column()
   fullName: string;
 
   @Column({unique:true})
   email: string;
-
-  @Column({unique:true})
-  username: string;
 
   @Column()
   password: string;
@@ -25,5 +22,5 @@ export class User extends BaseEntity {
   // confirmPassword: string;
 
   @Column()
-  role: UserRole;
+  role?: UserRole;
 }

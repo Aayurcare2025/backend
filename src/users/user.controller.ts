@@ -44,20 +44,20 @@ export class UserController {
 
   @Post('/login')
   async login(@Body() userLogin: UserDto): Promise<any> {
-    const user = await this.userService.findOne(userLogin.username);
+    const user = await this.userService.findOne(userLogin.email);
     if (!user) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
     const isPasswordValid = await bcrypt.compare(userLogin.password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid username or password');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     // You can return user data (without password) or JWT token here
     // const { password, ...rest } = user;
     // return rest;
     const payload = {
-      username: user.username,
+      email: user.email,
       ref_id: user.id,
       role: user.role,
     };
@@ -68,7 +68,7 @@ export class UserController {
       access_token: accessToken,
       user: {
         id: user.id,
-        username: user.username,
+        email: user.email,
         role: user.role,
       },
     }

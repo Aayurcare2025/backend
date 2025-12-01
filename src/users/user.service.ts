@@ -20,8 +20,8 @@ export class UsersService {
         private readonly data2Repository:Repository<Data2>,
       
       ) {}
-      async findOne(username: string): Promise<User | undefined> {
-  const user = await this.userRepository.findOne({ where: { username: username } });
+      async findOne(email: string): Promise<User | undefined> {
+  const user = await this.userRepository.findOne({ where: { email: email } });
   return user ?? undefined;  // converts null → undefined
 }
 
@@ -61,17 +61,15 @@ export class UsersService {
 
 async userregister(userRegister: UserDto): Promise<Partial<User>> {
   // Check if username exists
-  const existingUser = await this.userRepository.findOne({
-    where: { username: userRegister.username },
+  const existingEmail = await this.userRepository.findOne({
+    where: { email: userRegister.email },
   });
-  if (existingUser) {
-    throw new Error("Username already exists. Please choose a different one.");
+  if (existingEmail) {
+    throw new Error("email already exists. Please choose a different one.");
   }
 
   // Check password == confirmPassword
-  if (userRegister.password !== userRegister.confirmPassword) {
-    throw new Error("Passwords do not match.");
-  }
+  
 
   // Hash password
   const salt = await bcrypt.genSalt();
@@ -81,7 +79,6 @@ async userregister(userRegister: UserDto): Promise<Partial<User>> {
   const user = new User();
   user.fullName = userRegister.fullName;
   user.email = userRegister.email;
-  user.username = userRegister.username;
   user.password = hashedPassword;
 
   user.role = userRegister.role || UserRole.USER;
@@ -92,6 +89,8 @@ async userregister(userRegister: UserDto): Promise<Partial<User>> {
   // const { password, confirmPassword, ...rest } = user;
   const { password, ...rest } = user;
   return rest;
+
+
 }
 
 
