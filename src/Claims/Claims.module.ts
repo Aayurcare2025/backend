@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Claims } from './Claims.entity';
 import { ClaimsService } from './Claims.service';
 import { ClaimsController } from './Claims.controller';
+import { MailService } from './Mail.Service';
 
 
 
@@ -12,8 +13,8 @@ import { ClaimsController } from './Claims.controller';
 @Module({
   imports:[TypeOrmModule.forFeature([Claims]),
 ],
-  providers: [ClaimsService],
+  providers: [ClaimsService,MailService],
   controllers:[ClaimsController],
-  exports:[ClaimsService],
+  exports:[ClaimsService,MailService],
 })
 export class ClaimsModule {}
